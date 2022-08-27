@@ -1,22 +1,4 @@
 
-class Led {
-  private:
-    int pin;
-
-  public:
-    Led(int p) {
-      pin = p;
-      pinMode(pin, OUTPUT);
-    }
-    void setPrenderLed() {
-      digitalWrite(pin, HIGH);
-    }
-    void setApagarLed() {
-      digitalWrite(pin, LOW);
-    }
-
-};
-
 class Pulsador {
   private:
     int pin;
@@ -52,31 +34,12 @@ class Pulsador {
 };
 
 #define PIN_PULSADOR_1 3
-#define PIN_PULSADOR_2 6
-#define PIN_LED 13
-
 Pulsador *p1 = new Pulsador(PIN_PULSADOR_1);
-Pulsador *p2 = new Pulsador(PIN_PULSADOR_2);
-Led *l1 = new Led(PIN_LED);
 
-int contador = 0;
-void setup() {
-  Serial.begin(9600);
-  p1->setFlanco(LOW);
-  p2->setFlanco(HIGH);
+void setup(){
+
 }
 
-void loop() {
-
-  if (p1->getIsPress()) {
-    Serial.println("p1 is press");
-    l1->setPrenderLed();
-  }
-
-  if (p2->getIsPress()) {
-    Serial.println("p2 is press");
-    l1->setApagarLed();
-  }
-
-
+void loop(){
+  
 }
