@@ -74,69 +74,48 @@ public:
     }
 };
 
-//Defino los pines de los motores.
-#define PIN_MOTOR_DERECHO_DIR 4
-#define PIN_MOTOR_DERECHO_PWM 5
-#define PIN_MOTOR_IZQUIERDO_DIR 6
-#define PIN_MOTOR_IZQUIERDO_PWM 7
 
-//Instancio los motores
-Motor m1 = Motor(PIN_MOTOR_DERECHO_DIR, PIN_MOTOR_DERECHO_PWM);
-Motor m2 = Motor(PIN_MOTOR_IZQUIERDO_DIR, PIN_MOTOR_IZQUIERDO_PWM);
+class Pulsador {
+  private:
+    int pin;
+    bool flanco = HIGH;
+    bool estado_anterior = !flanco;
 
-//defino la direcciones del robot
-void forward() //voy hacia adelante
-{
-    m1.forward();
-    m2.forward();
+    //metodo
+  public:
+    Pulsador(int p) {
+      pin = p;
+
+      pinMode(pin, INPUT);
+    }
+
+    void setFlanco(bool f) {
+      flanco = f;
+      estado_anterior = !flanco;
+    }
+
+    //metodos o acciones
+    bool getIsPress() {
+      bool estado_actual = digitalRead(pin);
+      bool estado = (estado_anterior != estado_actual) && estado_actual == flanco;
+      estado_anterior = estado_actual;
+      return estado;
+    }
+
+    String getIsPressText() {
+      if (getIsPress()) return "PRESS";
+      else return "IS NOT PRESS";
+    }
+
+};
+
+#define PIN_PULSADOR_1 3
+Pulsador *p1 = new Pulsador(PIN_PULSADOR_1);
+
+void setup(){
+
 }
 
-void backward() //voy hacia atras
-{
-    m1.backward();
-    m2.backward();
-}
-
-void left() //giro a la izquierda
-{
-    m1.forward();
-    m2.backward();
-}
-
-
-void right() //giro a la derecha
-{
-    m1.backward();
-    m2.forward();
-}
-
-void stopMotor() //freno
-{
-  m1.stop();
-  m2.stop();
-}
-
-void setup()
-{
-    //como uno de los motores va en sentido contrario por que esta invertido fisicamente, invierto su sentido por software.
-    m1.invertDirection();
-}
-
-void loop()
-{
-    //voy hacia adelante
-    forward();
-    delay(1000);
-    //voy hacia atras
-    backward();
-    delay(1000);
-    //giro a la izquierda
-    left();
-    delay(1000);
-    //giro a la derecha
-    right();
-    delay(1000);
-    //freno
-    stopMotor();
-    delay(1000);
+void loop(){
+  
 }
